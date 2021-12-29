@@ -8,6 +8,26 @@ body{
   text-decoration: none;
 }
 
+.container-fluid{
+  padding: 15px 15px;
+}
+
+.colored-section {
+  background-color: #FFE135;
+  color: #fff;
+}
+
+.navbar {
+  padding: 0 0 0 0;
+}
+
+.navbar-brand {
+  margin-left: 100px;
+  font-family: "Ubuntu";
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
 .sidebar{
   position: fixed;
   top: none;
@@ -71,7 +91,7 @@ label #btn{
 label #cancel{
   z-index: 1111;
   left: -195px;
-  top: 17px;
+  top: 120px;
   font-size: 50px;
   color: #41444B;
   padding: 4px 9px;
