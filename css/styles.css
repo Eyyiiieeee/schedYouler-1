@@ -90,10 +90,10 @@ p {
 /* Title Image */
 
 .title-image {
-  width: 110%;
+  width: 80%;
   transform: rotate(0deg);
   position: absolute;
-  right: .1%;
+  right: 0.01%;
 }
 
 .title-image-logo {
@@ -174,9 +174,57 @@ p {
 
 /* CTA Section */
 
+.emailphone-Row{
+  color: #ffffff;
+  float: left;
+  width: 25%;
+  margin: 50px 50px 0px 200px;
+  text-align: left;
+}
+
+.email-Row {
+  margin-bottom: 50px;
+}
+
+.phone-Row {
+  margin-top: 50px;
+}
+
+.i{
+  float:left;
+  margin-right: 10px;
+}
+
+.emailphone-Row p{
+  color: #ffffff;
+}
+
+.facebooktwitter-Row{
+  color: #ffffff;
+  float: left;
+  width: 25%;
+  margin: 50px 50px 100px 200px;
+  text-align: left;
+}
+
+.facebook-Row {
+  margin-bottom: 50px;
+}
+
+.twitter-Row {
+  margin-top: 50px;
+}
+
+.i{
+  float:left;
+  margin-right: 10px;
+}
+
+.facebooktwitter-Row p{
+  color: #ffffff;
+}
 
 /* Footer Section */
-
 
 .social-icon {
   margin: 20px 10px;
