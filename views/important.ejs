@@ -1,0 +1,34 @@
+<%- include("partials/header"); -%>
+
+<section class="main-section">
+  <div class="box" id="heading">
+    <h2>IMPORTANT</h2>
+  </div>
+
+  <div class="box" id="">
+    <% for (var i = 0; i<newListItems.length; i++){ %>
+    <div class="item">
+      <input type="checkbox">
+      <li>
+        <%=  newListItems[i] %>
+      </li>
+      <div class="btn ml-auto">
+        <button class="delete-btn btn"type="button" name="button"><i class="far fa-trash-alt i-fa"></i></button>
+        <button class="fav-btn btn"type="button" name="button"><i class="far fa-star"></i></button>
+      </div>
+
+
+    </div>
+    <% } %>
+    <form class="item-form col-25" action="/" method="post">
+      <input class="task-input"type="text" name="newItem" placeholder="Add a task" autocomplete="off"><br>
+      <button type="submit" name="button">Post</button>
+  </form>
+
+
+
+
+</section>
+</body>
+
+</html>
