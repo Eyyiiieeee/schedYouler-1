@@ -250,13 +250,19 @@ p {
   text-align: justify;
 }
 
-.member-icon {
-  width: 50%;
+.title-image-logo{
+  margin-left: auto;
+  position: static;
 }
 
 .member-icon-lead {
   width: 20%;
 }
+
+.member-icon {
+  width: 50%;
+}
+
 
 .feature-title {
   margin-top: 20px;
