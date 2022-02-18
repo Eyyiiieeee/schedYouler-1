@@ -153,9 +153,9 @@ app.get("/important", function(req, res){
   res.render("important", {newListItems: items});
 });
 
-app.get("/upcoming", function(req, res){
-  res.render("upcoming", {newListItems: items});
-});
+// app.get("/upcoming", function(req, res){
+//   res.render("upcoming", {newListItems: items});
+// });
 
 app.get("/history", function(req, res){
   res.render("history", {newListItems: items});
