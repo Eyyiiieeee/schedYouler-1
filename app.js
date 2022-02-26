@@ -18,9 +18,18 @@ app.use(express.static("public"));
 
 const port = process.env.PORT || 3000
 
-var items = ["First Task", "Second Task", "Third Task"];
+var items = [];
+
+
 
 let userEmail;
+let user = {
+  id: "",
+  email: "",
+  password: "",
+  post: "",
+}
+
 
 const pool = mysql.createPool({
   connectionLimit: 10,
@@ -50,122 +59,145 @@ app.get("/signup", function(req, res) {
   res.render("signup")
 });
 
-app.get("/today" ,function(req, res){
- // res.render("list",{Username:userEmail});
+app.get("/today", function(req, res) {
+  // res.render("list",{Username:userEmail});
+  var today = new Date();
 
- var today = new Date();
+  var options = {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  };
 
- var options = {
-   weekday: "long",
-   day: "numeric",
-   month: "long",
-   year: "numeric"
- };
+  pool.getConnection((err, connection) => {
+    if (err) throw err
+    const queryString = "SELECT post FROM tasks WHERE user_id = '" + user.id + "'"
+    connection.query(queryString, (err, rows) => {
+      if (err) {
+        console.log("Failed to query at " + err)
+      }
 
- var day = today.toLocaleDateString("en-US", options);
+      // const itemCount = items.push(rows);
 
- res.render("today", {kindOfDay: day, newListItems: items});
+      for (let i = 0; i < rows.length; i++) {
+        items.push(rows[i].post);
+      }
 
- res.render("today", {
-   kindOfDay: day
-})
+      console.log(items);
+      console.log("number of posts: " + rows.length);
+      // console.log(Object.values(rows.post));
+      console.log("Getting data from database");
+
+      var day = today.toLocaleDateString("en-US", options);
+      res.render("today", {
+        kindOfDay: day,
+        newListItems: items
+      });
+
+    });
+
+  });
+
+
+
 });
+
+
+
 
 app.post("/signup", function(req, res) {
 
-var firstName = req.body.firstname;
-var lastName = req.body.lastname;
-var email = req.body.email;
-var password = req.body.password;
+  var firstName = req.body.firstname;
+  var lastName = req.body.lastname;
+  var email = req.body.email;
+  var password = req.body.password;
 
-pool.getConnection((err, connection) => {
-  if (err) throw err
+  pool.getConnection((err, connection) => {
+    if (err) throw err
 
-  connection.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('" + firstName + "', '" + lastName + "','" + email + "', '" + password + "')", (err, rows) => {
-    connection.release()
+    connection.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('" + firstName + "', '" + lastName + "','" + email + "', '" + password + "')", (err, rows) => {
+      connection.release()
 
-    if (!err) {
-      res.send(firstName + lastName + ' has been successfully signed up')
-      res.render("/login")
-    } else {
-      console.log(err)
-    }
+      if (!err) {
+        res.send(firstName + lastName + ' has been successfully signed up')
+        res.render("/login")
+      } else {
+        console.log(err)
+      }
+    })
   })
-})
 
 });
 
 
-app.post("/login", function(req, res){
- userEmail = req.body.email;
- userPassword = req.body.password;
+app.post("/login", function(req, res) {
+  userEmail = req.body.email;
+  userPassword = req.body.password;
   console.log("success");
- pool.getConnection((err, connection) => {
-  if (err) throw err
+  pool.getConnection((err, connection) => {
+    if (err) throw err
 
-  connection.query("SELECT * FROM users WHERE email = '" + userEmail +"'",(err, rows)=>{
-   connection.release()
+    connection.query("SELECT * FROM users WHERE email = '" + userEmail + "'", (err, rows) => {
+      connection.release()
 
-   if(!err){
-    if(userPassword == rows[0].password){
+      if (!err) {
+        if (userPassword == rows[0].password) {
 
+          user.email = rows[0].email;
+          user.password = rows[0].password;
+          user.id = rows[0].id;
 
-
-      res.redirect("/today");
-    }
-   }
-   else{
-    console.log(err)
-   }
+          res.redirect("/today");
+        }
+      } else {
+        console.log(err)
+      }
+    })
   })
-})
 });
 
 
-
-
-
-
-
-// app.get("/list", function(req, res) {
-//
-//
-//   var today = new Date();
-//
-//   var options = {
-//     weekday: "long",
-//     day: "numeric",
-//     month: "long",
-//     year: "numeric"
-//   };
-//
-//   var day = today.toLocaleDateString("en-US", options);
-//
-//   res.render("list", {kindOfDay: day, newListItems: items});
-//
-//   res.render("list", {
-//     kindOfDay: day
-//   });
-//
-// });
-
-app.get("/important", function(req, res){
-  res.render("important", {newListItems: items});
+app.get("/important", function(req, res) {
+  res.render("important", {
+    newListItems: items
+  });
 });
 
-// app.get("/upcoming", function(req, res){
-//   res.render("upcoming", {newListItems: items});
-// });
 
-app.get("/history", function(req, res){
-  res.render("history", {newListItems: items});
+app.get("/history", function(req, res) {
+  res.render("history", {
+    newListItems: items
+  });
 });
+
 
 app.post("/today", function(req, res) {
-  var item = req.body.newItem
-  items.push(item);
-  res.redirect("/today");
+  var newTask = req.body.newItem;
+
+  pool.getConnection((err, connection) => {
+    if (err) throw err
+
+    connection.query("INSERT INTO tasks (post, user_id) VALUES ('" + newTask + "','" + user.id + "' )", (err, rows) => {
+      connection.release()
+      // connection.query("SELECT post FROM tasks WHERE user_id = '" + user.id + "'", (err, rows) => {
+      //   connection.release()
+      // });
+
+
+      if (!err) {
+        res.redirect("/today");
+      } else {
+        console.log(err)
+      }
+
+
+    });
+
+  });
 });
+
+
 
 app.post("/important", function(req, res) {
   var item = req.body.newItem
@@ -173,11 +205,6 @@ app.post("/important", function(req, res) {
   // res.redirect("/");
 });
 
-app.post("/upcoming", function(req, res) {
-  var item = req.body.newItem
-  items.push(item);
-  // res.redirect("/");
-});
 
 app.post("/history", function(req, res) {
   // var item = req.body.newItem
