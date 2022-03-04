@@ -1,34 +1,41 @@
 <%- include("partials/header"); -%>
 
-  <section class="main-section">
-    <div class="box" id="heading">
-      <h2><%= kindOfDay %></h2>
-    </div>
+<section class="main-section">
+  <div class="box" id="heading">
+    <h2><%= kindOfDay %></h2>
+  </div>
 
-    <div class="box" id="">
-      <% for (var i = 0; i<newListItems.length; i++){ %>
+  <div class="box" id="">
+    <% for (var i = 0; i<newListItems.length; i++){ %>
+    <form class="" action="/delete" method="post">
       <div class="item">
-        <input type="checkbox">
+        <input type="checkbox" name="checkbox" value="<%=newListItems[i].id%>" onChange="this.form.submit()">
         <li>
-          <%=  newListItems[i] %>
+          <%=  newListItems[i].post %>
         </li>
-        <div class="btn ml-auto">
-          <button class="delete-btn btn"type="button" name="button"><i class="far fa-trash-alt i-fa"></i></button>
-          <button class="fav-btn btn"type="button" name="button"><i class="far fa-star"></i></button>
-        </div>
 
-
-      </div>
-      <% } %>
-      <form class="item-form col-25" action="/today" method="post">
-        <input class="task-input"type="text" name="newItem" placeholder="Add a task" autocomplete="off"><br>
-        <button type="submit" name="button">Post</button>
+    </form>
+    <form class="btn ml-auto" action="/important" method="post">
+      <!-- <div class="btn ml-auto fav-btn"> -->
+        <button class="fav-btn btn" type="submit" name="button_fav" value="<%=newListItems[i].post%>" onclick="this.form.submit()"><i class="far fa-star"></i></button>
+        <!-- <input type="submit" name=" button_fav" value="<%=newListItems[i].post%>" onclick="this.form.submit()"> -->
+      <!-- </div> -->
     </form>
 
 
 
 
-  </section>
+  </div>
+  <% } %>
+  <form class="item-form col-25" action="/today" method="post">
+    <input class="task-input" type="text" name="newItem" placeholder="Add a task" autocomplete="off"><br>
+    <button type="submit" name="button">Post</button>
+  </form>
+
+
+
+
+</section>
 </body>
 
 </html>

@@ -161,6 +161,10 @@ label #cancel{
 
 .item-form {
   display: inline;
+  display: flex;
+  text-align: center;
+  max-width: none;
+  width: 100%;
 }
 .item:last-child {
   border-bottom: 0;
@@ -183,12 +187,6 @@ p {
   color: #00204a;
 }
 
-form {
-  display: flex;
-  text-align: center;
-  max-width: none;
-  width: 100%;
-}
 
 
 button {
@@ -246,12 +244,8 @@ footer {
   width: 8px;
 }
 
-.fav-btn {
-  text-align:left;
-  border: none;
-  background-color: transparent;
-  width: 8px;
-}
+.fav-btn:active {
+  color: blue;
 
 .task-input {
   width: 100%;
