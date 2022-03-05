@@ -63,6 +63,10 @@ app.get("/error-login", function(req, res) {
   res.render("error")
 });
 
+app.get("/success-signup", function(req, res) {
+  res.render("success")
+});
+
 app.get("/today", function(req, res) {
   // res.render("list",{Username:userEmail});
   var today = new Date();
@@ -194,8 +198,7 @@ app.post("/signup", function(req, res) {
       connection.release()
 
       if (!err) {
-        res.send(firstName + lastName + ' has been successfully signed up')
-        res.render("/login")
+        res.redirect("/success-signup")
       } else {
         console.log(err)
       }
@@ -234,6 +237,10 @@ app.post("/login", function(req, res) {
 });
 
 app.post("/error-login", function(req, res) {
+  res.redirect("/login");
+});
+
+app.post("/success-signup", function(req, res) {
   res.redirect("/login");
 });
 
