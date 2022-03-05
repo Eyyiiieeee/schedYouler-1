@@ -59,6 +59,10 @@ app.get("/signup", function(req, res) {
   res.render("signup")
 });
 
+app.get("/error-login", function(req, res) {
+  res.render("error")
+});
+
 app.get("/today", function(req, res) {
   // res.render("list",{Username:userEmail});
   var today = new Date();
@@ -95,12 +99,86 @@ app.get("/today", function(req, res) {
 
   });
 
-
-
 });
 
 
 
+
+app.get("/important", function(req, res) {
+  let importantItems = [];
+  var important = req.body.button_fav;
+  pool.getConnection((err, connection) => {
+    if (err) throw err
+    const queryString = "SELECT * FROM important WHERE user_id = '" + user.id + "'"
+    connection.query(queryString, (err, rows) => {
+      if (err) {
+        console.log("Failed to query at " + err)
+      }
+
+      for (let i = 0; i < rows.length; i++) {
+        importantItems.push(rows[i]);
+      }
+
+      console.log(importantItems);
+      console.log("number of posts: " + rows.length);
+      console.log("Getting data from database");
+
+
+      res.render("important", {
+
+        newListItems: importantItems,
+
+      });
+
+    });
+
+  });
+});
+
+
+app.get("/history", function(req, res) {
+  let historyItems = [];
+  pool.getConnection((err, connection) => {
+    if (err) throw err
+    const queryString = "SELECT * FROM history WHERE user_id = '" + user.id + "'"
+    connection.query(queryString, (err, rows) => {
+      if (err) {
+        console.log("Failed to query at " + err)
+      }
+
+      for (let i = 0; i < rows.length; i++) {
+        historyItems.push(rows[i]);
+      }
+
+      console.log(historyItems);
+      console.log("number of posts: " + rows.length);
+      console.log("Getting data from database");
+
+
+      res.render("history", {
+        newListItems: historyItems,
+
+      });
+
+    });
+
+  });
+});
+
+app.get("/logout", function(req, res) {
+  items=[];
+  importantItems = [];
+  historyItems = [];
+  user = {
+    id: "",
+    email: "",
+    password: "",
+    post: "",
+  }
+  console.log("logout success");
+  console.log(items, importantItems, user);
+  res.redirect("/");
+});
 
 app.post("/signup", function(req, res) {
 
@@ -130,9 +208,10 @@ app.post("/signup", function(req, res) {
 app.post("/login", function(req, res) {
   userEmail = req.body.email;
   userPassword = req.body.password;
-  console.log("success");
   pool.getConnection((err, connection) => {
-    if (err) throw err
+    if (err){
+      res.redirect("/error-login");
+    };
 
     connection.query("SELECT * FROM users WHERE email = '" + userEmail + "'", (err, rows) => {
       connection.release()
@@ -143,81 +222,20 @@ app.post("/login", function(req, res) {
           user.email = rows[0].email;
           user.password = rows[0].password;
           user.id = rows[0].id;
-
           res.redirect("/today");
+        } else {
+          res.redirect("/error-login");
         }
       } else {
-        console.log(err)
+        res.redirect("/error-login");
       }
     })
   })
 });
 
-
-app.get("/important", function(req, res) {
-  let importantItems = [];
-  var important = req.body.button_fav;
-  pool.getConnection((err, connection) => {
-    if (err) throw err
-    const queryString = "SELECT post FROM important WHERE user_id = '" + user.id + "'"
-    connection.query(queryString, (err, rows) => {
-      if (err) {
-        console.log("Failed to query at " + err)
-      }
-
-      for (let i = 0; i < rows.length; i++) {
-        importantItems.push(rows[i].post);
-      }
-
-      console.log(importantItems);
-      console.log("number of posts: " + rows.length);
-      console.log("Getting data from database");
-
-
-      res.render("important", {
-
-        newListItems: importantItems,
-
-      });
-
-    });
-
-  });
+app.post("/error-login", function(req, res) {
+  res.redirect("/login");
 });
-
-
-app.get("/history", function(req, res) {
-  let historyItems = [];
-  pool.getConnection((err, connection) => {
-    if (err) throw err
-    const queryString = "SELECT post FROM history WHERE user_id = '" + user.id + "'"
-    connection.query(queryString, (err, rows) => {
-      if (err) {
-        console.log("Failed to query at " + err)
-      }
-
-      for (let i = 0; i < rows.length; i++) {
-        historyItems.push(rows[i].post);
-        important = rows[i].post;
-      }
-
-      console.log(items);
-      console.log("number of posts: " + rows.length);
-      // console.log(Object.values(rows.post));
-      console.log("Getting data from database");
-
-
-      res.render("history", {
-
-        newListItems: historyItems,
-
-      });
-
-    });
-
-  });
-});
-
 
 app.post("/today", function(req, res) {
 var newTask = req.body.newItem;
@@ -253,45 +271,68 @@ pool.getConnection((err, connection) => {
 app.post("/delete", function(req, res) {
   const checkedItemId = req.body.checkbox;
   var important = req.body.button_fav;
+  var importantPost = req.body.itemName;
 
   pool.getConnection((err, connection) => {
     if (err) throw err
 
     connection.query("DELETE FROM tasks WHERE id = '" + checkedItemId + "'", (err, rows) => {
-      // connection.release()
+      connection.release()
       if (!err) {
-        console.log("delete success id: " + checkedItemId);
+        console.log("delete from tasks success id: " + checkedItemId);
         res.redirect("/today");
       } else {
         console.log(err)
       }
-      // connection.query("INSERT INTO important (post, user_id) VALUES ('" + important + "','" + user.id + "')", (err, rows) => {
-      //   connection.release()
-      //   if (!err) {
-      //     console.log("inserted successfully into important");
-      //     res.redirect("/important");
-      //   }
-      // });
-
-
-
     })
-
-
-
   });
-
-
-
-
 });
 
-app.post("/important", function(req, res) {
-  var important = req.body.button_fav;
+app.post("/delete:important", function(req, res) {
+  const checkedItemIdimportant = req.body.checkbox_important;
+
   pool.getConnection((err, connection) => {
     if (err) throw err
 
-      connection.query("INSERT INTO important (post, user_id) VALUES ('" + important + "','" + user.id + "')", (err, rows) => {
+    connection.query("DELETE FROM important WHERE id = '" + checkedItemIdimportant + "'", (err, rows) => {
+      connection.release()
+      if (!err) {
+        console.log("delete from important success id: " + checkedItemIdimportant);
+        res.redirect("/important");
+      } else {
+        console.log(err)
+      }
+    })
+  });
+});
+
+app.post("/delete:history", function(req, res) {
+  const checkedItemIdhistory = req.body.checkbox_history;
+
+  pool.getConnection((err, connection) => {
+    if (err) throw err
+
+    connection.query("DELETE FROM history WHERE id = '" + checkedItemIdhistory + "'", (err, rows) => {
+      connection.release()
+      if (!err) {
+        console.log("delete from history success id: " + checkedItemIdhistory);
+        res.redirect("/history");
+      } else {
+        console.log(err)
+      }
+    })
+  });
+});
+
+
+
+app.post("/important", function(req, res) {
+  var important = req.body.button_fav;
+  checkboxId = req.body.checkbox;
+  pool.getConnection((err, connection) => {
+    if (err) throw err
+
+      connection.query("INSERT INTO important (tasks_id, post, user_id) VALUES ('" + checkboxId + "','" + important + "','" + user.id + "')", (err, rows) => {
         connection.release()
         if (!err) {
           console.log("inserted successfully into important");

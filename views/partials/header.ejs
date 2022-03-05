@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Homepage</title>
+  <link rel="icon" href="images/favicon.ico">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans&family=Teko:wght@500&display=swap" rel="stylesheet">
@@ -39,24 +40,27 @@
           <li><a href="/today"><i class="far fa-calendar-check"></i> TODAY</a></li>
           <!-- <li><a href="/upcoming"><i class="far fa-calendar-alt"></i> UPCOMING</a></li> -->
           <li><a href="/important"><i class="fas fa-star"></i> IMPORTANT</a></li>
-          <li><a href="history"><i class="fas fa-history"></i> HISTORY</a></li>
+          <li><a href="/history"><i class="fas fa-history"></i> HISTORY</a></li>
 
         </ul>
       </div>
-      <div class="dropdown ml-auto" id="">
-        <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Account
-        </a>
-        <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
-          <!-- <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a> -->
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Log Out</a>
-        </div>
-      </li>
-</ul>
-      </div>
+      <form class="dropdown ml-auto" action="/logout" method="post">
+        <!-- <div class="dropdown ml-auto" id=""> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Account
+            </a>
+            <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
+              <!-- <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a> -->
+              <div class="dropdown-divider"></div>
+              <a name="button_logout" class="dropdown-item" href="/logout">Log Out</a>
+            </div>
+          </li>
+          </ul>
+        <!-- </div> -->
+      </form>
+
     </nav>
 
   </section>

@@ -1,4 +1,69 @@
-<%- include("partials/header"); -%>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Important</title>
+  <link rel="icon" href="images/favicon.ico">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans&family=Teko:wght@500&display=swap" rel="stylesheet">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/homepage.css">
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/fa3c09dae8.js" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha512-0S+nbAYis87iX26mmj/+fWt1MmaKCv80H+Mbo+Ne7ES4I6rxswpfnC6PxmLiw33Ywj2ghbtTw0FkLbMWqh4F7Q==" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <section class="colored-section" id="title">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="">schedY<i class="fas fa-clock fa-1x"></i>Uler</a>
+      <!-- Sidebar -->
+      <input type="checkbox" id="check">
+      <label for="check">
+        <i class="fas fa-bars" id="btn"></i>
+        <i class="fas fa-times" id="cancel"></i>
+      </label>
+      <div class="sidebar">
+        <header>Menu</header>
+        <ul>
+          <li><a href="/today"><i class="far fa-calendar-check"></i> TODAY</a></li>
+          <!-- <li><a href="/upcoming"><i class="far fa-calendar-alt"></i> UPCOMING</a></li> -->
+          <li><a href="/important"><i class="fas fa-star"></i> IMPORTANT</a></li>
+          <li><a href="/history"><i class="fas fa-history"></i> HISTORY</a></li>
+
+        </ul>
+      </div>
+      <form class="dropdown ml-auto" action="/logout" method="post">
+        <!-- <div class="dropdown ml-auto" id=""> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Account
+            </a>
+            <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
+              <!-- <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a> -->
+              <div class="dropdown-divider"></div>
+              <a name="button_logout" class="dropdown-item" href="/logout">Log Out</a>
+            </div>
+          </li>
+          </ul>
+        <!-- </div> -->
+      </form>
+
+    </nav>
+
+  </section>
 
 <section class="main-section">
   <div class="box" id="heading">
@@ -7,11 +72,14 @@
 
   <div class="box" id="">
     <% for (var i = 0; i<newListItems.length; i++){ %>
-    <div class="item">
-      <input type="checkbox">
-      <li>
-        <%=  newListItems[i] %>
-      </li>
+    <form class="" action="/delete:important" method="post">
+      <div class="item">
+        <input type="checkbox" name="checkbox_important" value="<%=newListItems[i].id%>" onChange="this.form.submit()">
+        <li>
+          <%=  newListItems[i].post %>
+        </li>
+
+    </form>
 
 
 
